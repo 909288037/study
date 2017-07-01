@@ -66,6 +66,9 @@
                 templateUrl:'view/list.html',
                 controller:'MusicController'
             })
+                .otherwise({
+                    redirectTo:'/1'
+                })
         }]);
         Music.controller("MusicController",['$scope','$http','$routeParams',function ($scope, $http,$routeParams) {
             var id = $routeParams.id;
