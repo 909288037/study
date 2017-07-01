@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+        }
+        ol{
+            padding-top: 0;
+            margin: 0;
+        }
+        a{
+            text-decoration: none;
+        }
+        .music{
+            width: 600px;
+            margin: 100px auto;
+        }
+        .music nav{
+            height: 40px;
+            background-color: #000;
+            display: flex;
+        }
+        .music nav a{
+            flex: 1;
+            text-align: center;
+            line-height: 40px ;
+            color: #fff;
+        }
+        .music ol{
+            min-height: 400px;
+            border: 1px solid #000;
+            /*padding-left: 20px;*/
+        }
+        .music ol li{
+            line-height: 40px;
+        }
+        .music ol li:hover{
+            background-color: #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body ng-app="Music">
+    <div class="music">
+        <nav>
+            <a href="#/1">流行</a>
+            <a href="#/2">华语</a>
+            <a href="#/3">欧美</a>
+            <a href="#/4">日韩</a>
+        </nav>
+        <ol>
+            <div ng-view></div>
+        </ol>
+    </div>
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script>
+        var Music = angular.module("Music",["ngRoute"]);
+        Music.config(['$routeProvider',function ($routeProvider) {
+            $routeProvider.when("/:id",{
+                templateUrl:'view/list.html',
+                controller:'MusicController'
+            })
+        }]);
+        Music.controller("MusicController",['$scope','$http','$routeParams',function ($scope, $http,$routeParams) {
+            var id = $routeParams.id;
+            $http({
+                url:'api/list.php',
+                method:'get',
+                // headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+                params:{
+                    type:id
+                }
+            }).success(function(info){
+                console.log(info);
+                $scope.lists=info;
+            })
+        }])
+    </script>
+</body>
+</html>
